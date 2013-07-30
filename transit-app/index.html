@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  	<title>TrapiK.O.</title>
+  	<link rel="stylesheet" title="bootstrap" href="css/bootstrap.min.css"/></link>
+  	<link rel="stylesheet" title="bootstrap" href="css/bootstrap-responsive.min.css"/></link>
+  	<link rel="stylesheet" title="bootstrap" href="css/homepage.css"/></link>
+  </head>
+  <body>
+  	<!--header-->
+  	<div class="navbar navbar-fixed-top">  
+		<div class="navbar-inner">  
+			<div class="container">  
+				<div class="nav-collapse">
+          <a href="#"><img src="img/trapiko.jpg"></img></a>
+					<ul class="nav">  
+						<li class="active">
+							<a href="#">About</a>
+						</li>  
+						<li>
+							<a href="#about">Blog</a>
+						</li>  
+						<li>
+							<a href="#contact">Contact Us</a>
+						</li>  
+					</ul>
+				</div>
+		    </div>  
+		</div>  
+	</div> 
+
+  <div class="main-area">
+    <div class="phone-image-area">
+      <img src="img/iphone-5.jpg" width="200" height="350"></img>
+    </div>
+    
+    <div class="numbers-area">
+      <div class="main-summary-area">
+        <span class="number">14,895</span> texts sent, and counting...
+      </div>
+      <div class="sub-summary-area row">
+        <div class="span3">
+          <div class="subnumber">789</div>
+          <div class="sub-image-area">
+            <img src="img/jeep-icon.jpg"></img>
+          </div>
+          <div class="sub-message-area">Unique Jeepneys</div>
+        </div>
+        <div class="span3">
+          <div class="subnumber">542</div>
+          <div class="sub-image-area">
+            <img src="img/person-icon.jpg"></img>
+          </div>
+          <div class="sub-message-area">Unique Commuters</div>
+        </div>
+        <div class="span3">
+          <div class="subnumber">9,589</div>
+          <div class="sub-image-area">
+            <img src="img/coin-icon.jpg"></img>
+          </div>
+          <div class="sub-message-area">Pesos Worth of Prizes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  	<!--footer-->
+  	<script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
+  	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(
+        function() {
+          $("ul.nav li").click(
+            function() {
+              $(".active").removeClass("active");
+              $(this).addClass("active");
+            }
+          );
+        }
+      );
+    </script>
+  </body>
+</html
