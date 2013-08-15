@@ -6,11 +6,12 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/bootstrap-responsive.min.css')
-    link(rel='stylesheet', href='/stylesheets/homepage.css')
+    link(rel='stylesheet', href='/stylesheets/proj.css')
     block page_style
   body
     include navbar
-    block content
+    div.viewport
+      block content
     script(type="text/javascript",src="/javascripts/jquery-2.0.3.min.js")
     script(type="text/javascript",src="/javascripts/bootstrap.min.js")
     script(type="text/javascript",src="/javascripts/navbar.js")

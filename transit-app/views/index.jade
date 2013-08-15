@@ -1,26 +1,47 @@
 extends layout
 
+block page_style
+  link(rel='stylesheet', href='/stylesheets/index.css')
+
 block content
   div.main-area
     div.phone-image-area
-      img(src="img/iphone-5.jpg", width="200", height="350")
+      img(src="img/iphone-5.png", width="400", height="450")
     div.numbers-area
       div.main-summary-area
         span.number 14,895
         |  texts sent, and counting...
       div.sub-summary-area.row
-        div.span3
+        div.span3#JEEP_AREA
           div.subnumber 789
           div.sub-image-area
             img(src="/img/jeep-icon.jpg")
           div.sub-message-area Unique Jeepneys
-        div.span3
+        div.span3#LINE_AREA
           div.subnumber 542
           div.sub-image-area
             img(src="/img/person-icon.jpg")
           div.sub-message-area Unique Commuters
-        div.span3
+        div.span3#VOTER_AREA
           div.subnumber 9,589
           div.sub-image-area
             img(src="/img/coin-icon.jpg")
           div.sub-message-area Pesos Worth of Prizes
+
+block page_scripts
+  script(type="text/javascript").
+    $(document).ready(
+      function() {
+        $("div.sub-summary-area div.span3").mouseover(
+          function() {
+            $(this).addClass("sub-summary-hover");
+          }
+        );
+
+        $("div.sub-summary-area div.span3").mouseout(
+          function() {
+            $(this).removeClass("sub-summary-hover");
+          }
+        );
+      }
+    );

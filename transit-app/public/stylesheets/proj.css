@@ -1,0 +1,27 @@
+div.viewport {
+  margin-top: 40px;
+}
+
+body {
+  /*background-image: url('../img/jeep.jpg');*/
+  background-position: 50% 15%;
+}
+
+/*
+ * Navbar
+ */
+
+.brand span {
+  font-weight: bold;
+  font-size: 20pt;
+}
+
+div.search-form-area {
+  display: inline-block;
+  float: right;
+  height: 40px;
+}
+
+input[name=search_term], input[name=search_term] + input {
+  margin: 5px;
+}

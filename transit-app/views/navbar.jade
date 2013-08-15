@@ -1,14 +1,20 @@
 div.navbar.navbar-fixed-top
   div.navbar-inner
     div.container
-      div.nav-collapse
-        a.brand(href="/") trapiKO
-        ul.nav
-          li#home_navlink
-            a(id="home_navlink",href="/") Home
-          li#about_navlink
-            a(href="/about") About
-          li#blog_navlink
-            a(href="/blog") Blog
-          li#contact_us_navlink
-            a(href="/contact_us") Contact Us
+      div.row
+        div.nav-collapse
+          a.brand(href="/")
+            span
+              em trapiKO
+          ul.nav
+            li#home_navlink
+              a(id="home_navlink",href="/") Home
+            li#about_navlink
+              a(href="/about") About
+            li#blog_navlink
+              a(href="/blog") Blog
+            li#contact_us_navlink
+              a(href="/contact") Contact Us
+        div.search-form-area
+          form.form-search(method="POST", action="/search")
+            input.input-medium.search-query(type="text",name="search_term",placeholder="Search")
