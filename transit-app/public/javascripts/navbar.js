@@ -7,6 +7,10 @@ $(document).ready(
       $("#home_navlink").addClass("active");
     } else if (curView === "about") {
       $("#about_navlink").addClass("active");
+    } else if (curView === "blog") {
+      $("#blog_navlink").addClass("active");
+    } else if (curView === "contact") {
+      $("#contact_navlink").addClass("active");
     }
   }
 );

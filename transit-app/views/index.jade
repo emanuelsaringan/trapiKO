@@ -30,17 +30,29 @@ block content
 
 block page_scripts
   script(type="text/javascript").
+    function dataNotification() {
+
+    }
+
     $(document).ready(
       function() {
-        $("div.sub-summary-area div.span3").mouseover(
+        $("div.sub-summary-area.row div.span3").click(
           function() {
-            $(this).addClass("sub-summary-hover");
-          }
-        );
+            var id = $(this).attr('id');
 
-        $("div.sub-summary-area div.span3").mouseout(
-          function() {
-            $(this).removeClass("sub-summary-hover");
+            switch (id) {
+              case 'JEEP_AREA':
+                window.location.href = '/jeeps';
+                break;
+              case 'LINE_AREA':
+                window.location.href = '/voters';
+                break;
+              case 'VOTER_AREA':
+                window.location.href = '/prizes';
+                break;
+              default:
+                break;
+            }
           }
         );
       }

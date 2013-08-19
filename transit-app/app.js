@@ -61,6 +61,22 @@ app.get('/contact',
   }
 );
 
+app.get('/jeeps',
+  function(req, res) {
+    res.render('jeeps', {
+      title: 'Jeepney Overview'
+    });
+  }
+);
+
+app.get('/voters',
+  function(req, res) {
+    res.render('voters', {
+      title: 'Voter Overview'
+    });
+  }
+);
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
