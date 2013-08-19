@@ -81,6 +81,10 @@ http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 
+//Socket.IO
+var io = require('socket.io').listen(app.listen(WEB_APP_PORT));
+console.log("Listening on port " + WEB_APP_PORT);
+
 // Error handling
 
 app.use(app.router);
