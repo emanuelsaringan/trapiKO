@@ -2,6 +2,9 @@
 /**
  * Module dependencies.
  */
+var HOST_NAME = 'localhost';
+var WEB_APP_PORT = 3000;
+var DB_PORT = 27017;
 
 var express = require('express')
   , routes = require('./routes')
@@ -77,9 +80,24 @@ app.get('/voters',
   }
 );
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
-});
+app.get('/add_jeep',
+  function(req, res) {
+    res.render('add_jeep', {
+      title: 'Add A Jeep'
+    });
+  }
+);
+
+app.post('/add_jeep',
+  function(req, res) {
+    console.log(req.body);
+    res.redirect('/jeeps');
+  }
+);
+
+// http.createServer(app).listen(app.get('port'), function(){
+//   console.log('Express server listening on port ' + app.get('port'));
+// });
 
 //Socket.IO
 var io = require('socket.io').listen(app.listen(WEB_APP_PORT));

@@ -1,0 +1,61 @@
+extends layout
+
+block page_style
+  style(type="text/css").
+    input[name=plate_num] {
+      text-transform: uppercase;
+    }
+
+    a.nav-back {
+      cursor: pointer;
+    }
+
+block content
+  div.container
+    h1= title
+    div
+      a.nav-back(onclick="window.history.back()") < Go back to Jeeney Overview
+    div.span6
+      form.form-horizontal(action="/add_jeep",method="POST")
+        div.control-group
+          label.control-label Plate Number: 
+          div.controls
+            input(type="text",name="plate_num",placeholder="AB 1234")
+
+        div.control-group
+          label.control-label Driver's First Name: 
+          div.controls
+            input(type="text",name="first_name",placeholder="Juan")
+
+        div.control-group
+          label.control-label Driver's Last Name:
+          div.controls
+            input(type="text",name="last_name",placeholder="Dela Cruz")
+
+        div.control-group
+          label.control-label Line:
+          div.controls
+            select(name="line")
+              option(value="0") Katipunan-Balara
+              option(value="1") Tungko-MRT
+              option(value="2") UP-Philcoa
+              option(value="3") Ayala-Buendia
+
+        div.form-actions
+          input.btn(type="reset",value="Cancel")
+          | 
+          a.btn.btn-primary#BTN_ADD
+            i.icon-plus.icon-white
+            |  Add
+
+block page_scripts
+  script(type="text/javascript").
+    $(document).ready(
+      function() {
+        $("#BTN_ADD").click(
+          function() {
+            document.forms[1].submit();
+          }
+        );
+      }
+    );
