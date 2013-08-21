@@ -1,9 +1,17 @@
 extends layout
 
+block page_style
+  style(type="text/css").
+    div.timestamp {
+      text-align: right;
+    }
+
 block content
   div.container
     h1= title
-    span as of 8/19/2013
+    a.btn.btn-primary(href="/add_jeep")
+      i.icon-plus.icon-white
+      | Add Jeep
     table.table.table-striped
       thead
         tr
@@ -31,3 +39,4 @@ block content
           td Tungko - MRT
           td 900
           td 450
+    div.timestamp as of 8/19/2013 13:01:02
