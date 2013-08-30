@@ -8,7 +8,7 @@ body {
 }
 
 /*
- * Navbar
+ * Nav
  */
 
 .brand span {
@@ -24,4 +24,8 @@ div.search-form-area {
 
 input[name=search_term], input[name=search_term] + input {
   margin: 5px;
+}
+
+a.nav-back {
+  cursor: pointer;
 }

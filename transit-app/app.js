@@ -51,7 +51,7 @@ app.get('/about',
 app.get('/blog', 
   function(req, res) {
     res.render('blog', {
-      title: 'trapiKO Blog'
+      title: 'trapiKO Development Blog'
     });
   }
 );
@@ -59,7 +59,8 @@ app.get('/blog',
 app.get('/contact', 
   function(req, res) {
     res.render('contact', {
-      title: 'Contact Us'
+      title: 'Contact Us',
+      email: 'dev@lambdageek.com'
     });
   }
 );
@@ -90,8 +91,29 @@ app.get('/add_jeep',
 
 app.post('/add_jeep',
   function(req, res) {
-    console.log(req.body);
     res.redirect('/jeeps');
+  }
+);
+
+app.get('/prizes',
+  function(req, res) {
+    res.render('prizes', {
+      title: 'Prize Overview'
+    });
+  }
+);
+
+app.get('/add_prize',
+  function(req, res) {
+    res.render('add_prize', {
+      title: 'Add A Prize'
+    });
+  }
+);
+
+app.post('/add_prize',
+  function(req, res) {
+    res.redirect('/prizes');
   }
 );
 

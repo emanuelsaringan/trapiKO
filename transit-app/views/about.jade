@@ -1,4 +1,46 @@
 extends layout
 
+block page_style
+  style(type="text/css").
+    div.about-img-area {
+      margin: auto;
+      text-align: center;
+      width: 800px;
+      margin-bottom: 80px;
+    }
+
+    img.about-img {
+      max-height: 200px;
+    }
+
 block content
-  | TrapiKO is our entry for the Philippine Hackathome Challenge
+  div.container
+    h1= title
+    div
+      div.about-img-area
+        img.about-img(src="/img/person-icon.jpg")
+        h5 trapiKO is a system which aims to reduce traffic in Metro Manila by 
+           | incentivizing good driving behaviors by jeepney drivers through the help of passengers. 
+
+    div
+      div.about-img-area
+        img.about-img(src="/img/jeep-icon.jpg")
+        h5 We believe that even without the proper infrastructure, 
+           | traffic conditions have the potential to improve as long as drivers do their
+           | part of being a disciplined road user. To accelerate this cause, we focused
+           | on the jeepney sector first as they comprise a large majority of PUV population
+           | in Manila's roads. 
+
+    div
+      div.about-img-area
+        img.about-img(src="/img/sms-icon.png")
+        h5 Through the use of a "tipping" system, passengers could show
+           | their support to a disciplined driver by giving an actual tip via SMS. 
+
+    div
+      div.about-img-area
+        img.about-img(src="/img/coin-icon.jpg")
+        h5 The tips will then be collected by drivers after a certain period of time. 
+           | On the other hand, passengers who give tips will have a chance to win a raffle item from
+           | one of our sponsors in the monthly draw. 
+

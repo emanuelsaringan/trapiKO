@@ -1,4 +1,8 @@
 extends layout
 
 block content
-  | TrapiKO is our entry for the Philippine Hackathome Challenge
+  div.container
+    h1= title
+    div
+      span For any concerns or inquiries, you may contact 
+      a(href="mailto:#{email}") #{email}

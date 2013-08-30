@@ -1,0 +1,29 @@
+extends layout
+
+block page_style
+  style(type="text/css").
+    div.prize-thumb {
+      max-width: 150px;
+      max-height: 150px;
+      display: inline-block;
+    }
+
+    div.prize-info {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+block content
+  div.container
+    h1= title
+    a.btn.btn-primary(href="/add_prize")
+      i.icon-plus.icon-white
+      | Add Prize
+    div
+      div.prize-thumb
+        img(src="/img/iphone-5.png")
+      div.prize-info
+        label Item: iPhone 5
+        label Sponsor: JLN Corporation
+        label Date Posted: 06/16/1991
+        label Description: Black 32GB WiFi only
