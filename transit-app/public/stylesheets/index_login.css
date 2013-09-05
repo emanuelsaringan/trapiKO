@@ -1,0 +1,7 @@
+div.sub-summary-area div.span3 {
+  cursor: pointer;
+}
+
+div.sub-summary-area div.span3:hover {
+  border-bottom-style: solid;
+}

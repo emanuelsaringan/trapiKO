@@ -2,6 +2,8 @@ extends layout
 
 block page_style
   link(rel='stylesheet', href='/stylesheets/index.css')
+  if (userInfo)
+    link(rel='stylesheet', href='/stylesheets/index_login.css')
 
 block content
   div.main-area
@@ -29,31 +31,5 @@ block content
           div.sub-message-area Pesos Worth of Prizes
 
 block page_scripts
-  script(type="text/javascript").
-    function dataNotification() {
-
-    }
-
-    $(document).ready(
-      function() {
-        $("div.sub-summary-area.row div.span3").click(
-          function() {
-            var id = $(this).attr('id');
-
-            switch (id) {
-              case 'JEEP_AREA':
-                window.location.href = '/jeeps';
-                break;
-              case 'LINE_AREA':
-                window.location.href = '/voters';
-                break;
-              case 'VOTER_AREA':
-                window.location.href = '/prizes';
-                break;
-              default:
-                break;
-            }
-          }
-        );
-      }
-    );
+  if (userInfo)
+    script(type="text/javascript", src="/javascripts/index_login.js")

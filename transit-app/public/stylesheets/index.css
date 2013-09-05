@@ -54,11 +54,3 @@ div.sub-message-area {
   line-height: 1em;
   text-transform: uppercase;
 }
-
-div.sub-summary-area div.span3 {
-  cursor: pointer;
-}
-
-div.sub-summary-area div.span3:hover {
-  border-bottom-style: solid;
-}

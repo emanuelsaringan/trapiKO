@@ -15,6 +15,13 @@ div.navbar.navbar-fixed-top
               a(href="/blog") Blog
             li#contact_navlink
               a(href="/contact") Contact Us
-        div.search-form-area
-          form.form-search(method="POST", action="/search")
-            input.input-medium.search-query(type="text",name="search_term",placeholder="Search")
+          div.login-logout-area
+            if (!userInfo)
+              form.form-search(method="POST", action="/login")
+                input.input-medium(type="text", name="username", placeholder="username")
+                input.input-medium(type="password", name="password", placeholder="password")
+                input.btn.btn-primary(type="submit",value="Login")
+            else
+              span Welcome back #{userInfo.name}
+              form(method="POST", action="/logout")
+                input.btn(type="submit", value="Logout")

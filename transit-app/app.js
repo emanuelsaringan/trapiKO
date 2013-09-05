@@ -10,24 +10,98 @@ var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , passport = require('passport')
+  , LocalStrategy = require('passport-local').Strategy
+  , NodeUtils = require('./node-utils').NodeUtils;
 
 var app = express();
 
-// all environments
-app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+// Order is important! 
+app.configure(function() {
+  app.set('port', process.env.PORT || 3000);
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'jade');
+  app.use(express.favicon());
+  app.use(express.logger('dev'));
+  
+  app.use(express.cookieParser());
+  app.use(express.session({ secret: 'keyboard cat' }));
+  app.use(express.bodyParser());
+  app.use(express.methodOverride());
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use(app.router);
+  app.use(express.static(path.join(__dirname, 'public')));
+});
+
+// mongoose
+// mongoose.connect("mongodb://localhost/transit-app");
+
+// var LocalUserSchema = new mongoose.Schema(
+//   {
+//     username: String,
+//     salt: String,
+//     hash: String
+//   }
+// );
+
+// passport
+passport.serializeUser(
+  function(user, done) {
+    done(null, user);
+  }
+);
+
+passport.deserializeUser(
+  function(id, done) {
+    // User.findById(id, function(err, user) {
+      done(null, { name: 'Jay' });
+    // });
+  }
+);
+
+passport.use(
+  new LocalStrategy(
+    function(username, password, done) {
+      if (username === "test" && password == "test") {
+        var userInfo = {
+          name: username
+        };
+
+        return done(null, userInfo);  
+      }
+
+      return done(null, false);
+      
+      // User.findOne({ username: username }, function (err, user) {
+      //   if (err) { return done(err); }
+      //   if (!user) {
+      //     return done(null, false, { message: 'Incorrect username.' });
+      //   }
+      //   if (!user.validPassword(password)) {
+      //     return done(null, false, { message: 'Incorrect password.' });
+      //   }
+      //   return done(null, user);
+      // });
+    }
+  )
+);
 
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
+}
+
+// Utility functions
+function getUserInfo(req) {
+  if (NodeUtils.isEmptyObject(req.session.passport)) {
+    return null;
+  }
+
+  return {
+    name: req.session.passport.user.name
+  };
 }
 
 // Routes
@@ -35,7 +109,8 @@ if ('development' == app.get('env')) {
 app.get('/', 
   function(req, res) {
     res.render('index',{
-      title: "trapiKO"
+      title: "trapiKO",
+      userInfo: getUserInfo(req)
     });
   }
 );
@@ -43,7 +118,8 @@ app.get('/',
 app.get('/about', 
   function(req, res) {
     res.render('about',{
-      title: "About trapiKO"
+      title: "About trapiKO",
+      userInfo: getUserInfo(req)
     });
   }
 );
@@ -51,7 +127,8 @@ app.get('/about',
 app.get('/blog', 
   function(req, res) {
     res.render('blog', {
-      title: 'trapiKO Development Blog'
+      title: 'trapiKO Development Blog',
+      userInfo: getUserInfo(req)
     });
   }
 );
@@ -60,7 +137,8 @@ app.get('/contact',
   function(req, res) {
     res.render('contact', {
       title: 'Contact Us',
-      email: 'dev@lambdageek.com'
+      email: 'dev@lambdageek.com',
+      userInfo: getUserInfo(req)
     });
   }
 );
@@ -68,7 +146,8 @@ app.get('/contact',
 app.get('/jeeps',
   function(req, res) {
     res.render('jeeps', {
-      title: 'Jeepney Overview'
+      title: 'Jeepney Overview',
+      userInfo: getUserInfo(req)
     });
   }
 );
@@ -76,7 +155,8 @@ app.get('/jeeps',
 app.get('/voters',
   function(req, res) {
     res.render('voters', {
-      title: 'Voter Overview'
+      title: 'Voter Overview',
+      userInfo: getUserInfo(req)
     });
   }
 );
@@ -84,7 +164,8 @@ app.get('/voters',
 app.get('/add_jeep',
   function(req, res) {
     res.render('add_jeep', {
-      title: 'Add A Jeep'
+      title: 'Add A Jeep',
+      userInfo: getUserInfo(req)
     });
   }
 );
@@ -98,7 +179,8 @@ app.post('/add_jeep',
 app.get('/prizes',
   function(req, res) {
     res.render('prizes', {
-      title: 'Prize Overview'
+      title: 'Prize Overview',
+      userInfo: getUserInfo(req)
     });
   }
 );
@@ -106,7 +188,8 @@ app.get('/prizes',
 app.get('/add_prize',
   function(req, res) {
     res.render('add_prize', {
-      title: 'Add A Prize'
+      title: 'Add A Prize',
+      userInfo: getUserInfo(req)
     });
   }
 );
@@ -114,6 +197,22 @@ app.get('/add_prize',
 app.post('/add_prize',
   function(req, res) {
     res.redirect('/prizes');
+  }
+);
+
+app.post('/login', 
+  passport.authenticate('local', 
+    {
+      successRedirect: '/',
+      failureRedirect: '/fail'
+    }
+  )
+);
+
+app.post('/logout',
+  function(req, res) {
+    req.logout();
+    res.redirect('/');
   }
 );
 

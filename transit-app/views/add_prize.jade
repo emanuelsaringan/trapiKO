@@ -3,6 +3,8 @@ extends layout
 block content
   div.container
     h1= title
+    div
+      a.nav-back(onclick="window.history.back()") < Go back to Prize Overview
     form.form-horizontal(action="/add_prize",method="POST",enctype="multipart/form-data")
       div.control-group
         label.control-label(for="ITEM_NAME") Item Name: 
@@ -21,7 +23,7 @@ block content
         div.controls
           input(type="file",name="item_img",id="ITEM_IMG")
       div.form-actions
-        input.btn(type="reset",value="Cancel")
+        input.btn(type="reset", value="Reset")
         | 
         a.btn.btn-primary#BTN_ADD
           i.icon-plus.icon-white
@@ -31,9 +33,9 @@ block page_scripts
   script(type="text/javascript").
     $(document).ready(
       function() {
-        $("#BTN_ADD").click(
+        $("#BTN_CANCEL").click(
           function() {
-            document.forms[1].submit();
+            window.history.back();
           }
         );
       }

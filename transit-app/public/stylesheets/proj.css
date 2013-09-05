@@ -2,11 +2,6 @@ div.viewport {
   margin-top: 40px;
 }
 
-body {
-  /*background-image: url('../img/jeep.jpg');*/
-  background-position: 50% 15%;
-}
-
 /*
  * Nav
  */
@@ -16,13 +11,13 @@ body {
   font-size: 20pt;
 }
 
-div.search-form-area {
+div.login-logout-area {
   display: inline-block;
   float: right;
-  height: 40px;
+  height: 30px;
 }
 
-input[name=search_term], input[name=search_term] + input {
+form.form-search input {
   margin: 5px;
 }
 
