@@ -7,36 +7,32 @@ var Connection = mongodb.Connection;
 var BSON = mongodb.BSON;
 var ObjectID = mongodb.ObjectID;
 
-JeepProvider = function(host, port) {
+UserProvider = function(host, port) {
   var server = new Server(host, port, {safe:false}, {auto_reconnect:true}, {});
   this.db = new Db(DB_NAME, server);
   this.db.open(function(){});
 }
 
-JeepProvider.prototype.getCollection = function(callback) {
-  this.db.collection('jeep',
-    function(error, jeep_collection) {
+UserProvider.prototype.getCollection = function(callback) {
+  this.db.collection('user',
+    function(error, user_collection) {
       if (error) {
         callback(error);
       } else {
-        callback(null, jeep_collection);
+        callback(null, user_collection);
       }
     }
   );
 }
 
-JeepProvider.prototype.findAll = function(callback) {
-  this.getCollection(callback);
-};
-
-JeepProvider.prototype.add = function(jeep, callback) {
+UserProvider.prototype.findUserByUsername = function(username, callback) {
   this.getCollection(
-    function(error, jeep_collection) {
+    function(error, user_collection) {
       if (error) {
         callback(error);
       } else {
-        jeep_collection.insert(jeep,
-          function(error, result) {
+        user_collection.findOne({ username: username }, 
+          function (error, result) {
             if (error) {
               callback(error);
             } else {
@@ -47,6 +43,6 @@ JeepProvider.prototype.add = function(jeep, callback) {
       }
     }
   );
-};
+}
 
-exports.JeepProvider = JeepProvider;
+exports.UserProvider = UserProvider;

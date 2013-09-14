@@ -16,12 +16,11 @@ div.navbar.navbar-fixed-top
             li#contact_navlink
               a(href="/contact") Contact Us
           div.login-logout-area
-            if (!userInfo)
+            if (!user)
               form.form-search(method="POST", action="/login")
                 input.input-medium(type="text", name="username", placeholder="username")
                 input.input-medium(type="password", name="password", placeholder="password")
                 input.btn.btn-primary(type="submit",value="Login")
             else
-              span Welcome back #{userInfo.name}
               form(method="POST", action="/logout")
                 input.btn(type="submit", value="Logout")

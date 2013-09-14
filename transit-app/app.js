@@ -11,11 +11,16 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
+  , mongoose = require('mongoose')
   , passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy
-  , NodeUtils = require('./node-utils').NodeUtils;
+  , NodeUtils = require('./node-utils').NodeUtils
+  , UserProvider = require('./user_provider').UserProvider
+  , JeepProvider = require('./jeep_provider').JeepProvider;
 
 var app = express();
+var UserProvider = new UserProvider(HOST_NAME, DB_PORT);
+var JeepProvider = new JeepProvider(HOST_NAME, DB_PORT);
 
 // Order is important! 
 app.configure(function() {
@@ -31,20 +36,16 @@ app.configure(function() {
   app.use(express.methodOverride());
   app.use(passport.initialize());
   app.use(passport.session());
-  app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
+  app.use(function(req, res, next){
+    res.locals.user = req.session.passport.user;
+    next();
+  });
+  app.use(app.router);
 });
 
 // mongoose
-// mongoose.connect("mongodb://localhost/transit-app");
-
-// var LocalUserSchema = new mongoose.Schema(
-//   {
-//     username: String,
-//     salt: String,
-//     hash: String
-//   }
-// );
+mongoose.connect('mongodb://localhost/transit-app');
 
 // passport
 passport.serializeUser(
@@ -54,36 +55,32 @@ passport.serializeUser(
 );
 
 passport.deserializeUser(
-  function(id, done) {
-    // User.findById(id, function(err, user) {
-      done(null, { name: 'Jay' });
-    // });
+  function(user, done) {
+    UserProvider.findUserByUsername(user.username, function(err, user) {
+      done(null, user);
+    });
   }
 );
 
 passport.use(
   new LocalStrategy(
     function(username, password, done) {
-      if (username === "test" && password == "test") {
-        var userInfo = {
-          name: username
-        };
+      UserProvider.findUserByUsername(username, 
+        function (err, user) {
+          if (err) {
+            return done(err);
+          }
 
-        return done(null, userInfo);  
-      }
+          if (!user) {
+            return done(null, false, { message: 'Incorrect username.' });
+          }
 
-      return done(null, false);
-      
-      // User.findOne({ username: username }, function (err, user) {
-      //   if (err) { return done(err); }
-      //   if (!user) {
-      //     return done(null, false, { message: 'Incorrect username.' });
-      //   }
-      //   if (!user.validPassword(password)) {
-      //     return done(null, false, { message: 'Incorrect password.' });
-      //   }
-      //   return done(null, user);
-      // });
+          if (user.password != password) {
+            return done(null, false, { message: 'Incorrect password.' });
+          }
+
+          return done(null, user);
+      });
     }
   )
 );
@@ -93,24 +90,12 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-// Utility functions
-function getUserInfo(req) {
-  if (NodeUtils.isEmptyObject(req.session.passport)) {
-    return null;
-  }
-
-  return {
-    name: req.session.passport.user.name
-  };
-}
-
 // Routes
 
 app.get('/', 
   function(req, res) {
     res.render('index',{
-      title: "trapiKO",
-      userInfo: getUserInfo(req)
+      title: 'trapiKO'
     });
   }
 );
@@ -118,8 +103,7 @@ app.get('/',
 app.get('/about', 
   function(req, res) {
     res.render('about',{
-      title: "About trapiKO",
-      userInfo: getUserInfo(req)
+      title: 'About trapiKO'
     });
   }
 );
@@ -127,8 +111,7 @@ app.get('/about',
 app.get('/blog', 
   function(req, res) {
     res.render('blog', {
-      title: 'trapiKO Development Blog',
-      userInfo: getUserInfo(req)
+      title: 'trapiKO Development Blog'
     });
   }
 );
@@ -137,8 +120,7 @@ app.get('/contact',
   function(req, res) {
     res.render('contact', {
       title: 'Contact Us',
-      email: 'dev@lambdageek.com',
-      userInfo: getUserInfo(req)
+      email: 'dev@lambdageek.com'
     });
   }
 );
@@ -146,8 +128,7 @@ app.get('/contact',
 app.get('/jeeps',
   function(req, res) {
     res.render('jeeps', {
-      title: 'Jeepney Overview',
-      userInfo: getUserInfo(req)
+      title: 'Jeepney Overview'
     });
   }
 );
@@ -155,8 +136,7 @@ app.get('/jeeps',
 app.get('/voters',
   function(req, res) {
     res.render('voters', {
-      title: 'Voter Overview',
-      userInfo: getUserInfo(req)
+      title: 'Voter Overview'
     });
   }
 );
@@ -164,23 +144,35 @@ app.get('/voters',
 app.get('/add_jeep',
   function(req, res) {
     res.render('add_jeep', {
-      title: 'Add A Jeep',
-      userInfo: getUserInfo(req)
+      title: 'Add A Jeep'
     });
   }
 );
 
 app.post('/add_jeep',
   function(req, res) {
-    res.redirect('/jeeps');
+    var jeep = {
+      plate_num : req.param('plate_num'),
+      first_name : req.param('first_name'),
+      line : req.param('line')
+    };
+
+    JeepProvider.add(jeep, 
+      function(error, result) {
+        if (error) {
+          res.redirect('/fail');
+        } else {
+          res.redirect('/jeeps');
+        }
+      }
+    );
   }
 );
 
 app.get('/prizes',
   function(req, res) {
     res.render('prizes', {
-      title: 'Prize Overview',
-      userInfo: getUserInfo(req)
+      title: 'Prize Overview'
     });
   }
 );
@@ -188,8 +180,7 @@ app.get('/prizes',
 app.get('/add_prize',
   function(req, res) {
     res.render('add_prize', {
-      title: 'Add A Prize',
-      userInfo: getUserInfo(req)
+      title: 'Add A Prize'
     });
   }
 );

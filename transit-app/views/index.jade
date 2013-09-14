@@ -2,7 +2,7 @@ extends layout
 
 block page_style
   link(rel='stylesheet', href='/stylesheets/index.css')
-  if (userInfo)
+  if (user)
     link(rel='stylesheet', href='/stylesheets/index_login.css')
 
 block content
@@ -31,5 +31,5 @@ block content
           div.sub-message-area Pesos Worth of Prizes
 
 block page_scripts
-  if (userInfo)
+  if (user)
     script(type="text/javascript", src="/javascripts/index_login.js")
