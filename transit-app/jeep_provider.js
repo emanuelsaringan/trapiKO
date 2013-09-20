@@ -26,7 +26,23 @@ JeepProvider.prototype.getCollection = function(callback) {
 }
 
 JeepProvider.prototype.findAll = function(callback) {
-  this.getCollection(callback);
+  this.getCollection(
+    function(error, jeep_collection) {
+      if (error) {
+        callback(error);
+      } else {
+        jeep_collection.find({},
+          function(error, result) {
+            if (error) {
+              callback(error);
+            } else {
+              result.toArray(callback);
+            }
+          }
+        );
+      }
+    }
+  );
 };
 
 JeepProvider.prototype.add = function(jeep, callback) {
@@ -35,6 +51,9 @@ JeepProvider.prototype.add = function(jeep, callback) {
       if (error) {
         callback(error);
       } else {
+        jeep.total_votes = 0;
+        jeep.amount_raised = 0;
+        
         jeep_collection.insert(jeep,
           function(error, result) {
             if (error) {

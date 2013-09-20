@@ -21,22 +21,12 @@ block content
           th Total Votes
           th Amount Raised
       tbody
-        tr
-          td PXY 998
-          td Ramon Bautista
-          td Katipunan - Balara
-          td 1,100
-          td 500
-        tr
-          td SHY 912
-          td Chito Miranda
-          td Katipunan - Balara
-          td 12,100
-          td 6,000
-        tr
-          td QWQ 099
-          td Kobe Bryant
-          td Tungko - MRT
-          td 900
-          td 450
+        - each jeep in jeeps
+          tr
+            td= jeep.plate_num
+            td= jeep.first_name
+            td= jeep.line
+            td= jeep.total_votes
+            td= jeep.amount_raised
+
     div.timestamp as of 8/19/2013 13:01:02

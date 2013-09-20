@@ -45,7 +45,17 @@ app.configure(function() {
 });
 
 // mongoose
-mongoose.connect('mongodb://localhost/transit-app');
+// mongoose.connect('mongodb://localhost/transit-app');
+// var Schema = mongoose.Schema;
+
+// //Model
+// var JeepSchema = new Schema({
+//     plate_num    : String,
+//     first_name   : String
+// });
+
+// mongoose.model('Jeep', JeepSchema);
+// var Jeep = mongoose.model('Jeep');
 
 // passport
 passport.serializeUser(
@@ -127,9 +137,18 @@ app.get('/contact',
 
 app.get('/jeeps',
   function(req, res) {
-    res.render('jeeps', {
-      title: 'Jeepney Overview'
-    });
+    JeepProvider.findAll(
+      function(error, results) {
+        if (error) {
+          res.render('/fail');
+        } else { 
+          res.render('jeeps', {
+            title: 'Jeepney Overview',
+            jeeps: results
+          });
+        }
+      }
+    );
   }
 );
 
