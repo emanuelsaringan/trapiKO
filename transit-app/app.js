@@ -11,7 +11,6 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
-  , mongoose = require('mongoose')
   , passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy
   , NodeUtils = require('./node-utils').NodeUtils
@@ -43,19 +42,6 @@ app.configure(function() {
   });
   app.use(app.router);
 });
-
-// mongoose
-// mongoose.connect('mongodb://localhost/transit-app');
-// var Schema = mongoose.Schema;
-
-// //Model
-// var JeepSchema = new Schema({
-//     plate_num    : String,
-//     first_name   : String
-// });
-
-// mongoose.model('Jeep', JeepSchema);
-// var Jeep = mongoose.model('Jeep');
 
 // passport
 passport.serializeUser(
