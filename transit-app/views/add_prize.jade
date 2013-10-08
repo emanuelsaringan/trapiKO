@@ -7,21 +7,25 @@ block content
       a.nav-back(onclick="window.history.back()") < Go back to Prize Overview
     form.form-horizontal(action="/add_prize",method="POST",enctype="multipart/form-data")
       div.control-group
-        label.control-label(for="ITEM_NAME") Item Name: 
+        label.control-label(for="NAME") Item Name: 
         div.controls
-          input(type="text",name="item_name",id="ITEM_NAME")
+          input(type="text",name="name",id="NAME")
       div.control-group
         label.control-label(for="SPONSOR") Sponsor: 
         div.controls
           input(type="text",name="sponsor",id="SPONSOR")
       div.control-group
-        label.control-label(for="ITEM_DESC") Description: 
+        label.control-label(for="PRICE") Estimated Price: 
         div.controls
-          input(type="text",name="item_desc",id="ITEM_DESC")
+          input(type="text",name="price",id="PRICE")
       div.control-group
-        label.control-label(for="ITEM_IMG") Image: 
+        label.control-label(for="DESC") Description: 
         div.controls
-          input(type="file",name="item_img",id="ITEM_IMG")
+          input(type="text",name="desc",id="DESC")
+      div.control-group
+        label.control-label(for="IMG") Image: 
+        div.controls
+          input(type="file",name="img",id="IMG")
       div.form-actions
         input.btn(type="reset", value="Reset")
         | 
@@ -38,5 +42,12 @@ block page_scripts
             window.history.back();
           }
         );
+
+        $("#BTN_ADD").click(
+          function() {
+            document.forms[1].submit();
+          }
+        );
+        
       }
     );

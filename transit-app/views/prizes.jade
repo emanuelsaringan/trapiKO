@@ -2,15 +2,9 @@ extends layout
 
 block page_style
   style(type="text/css").
-    div.prize-thumb {
+    img.prize-img {
       max-width: 150px;
       max-height: 150px;
-      display: inline-block;
-    }
-
-    div.prize-info {
-      display: inline-block;
-      vertical-align: middle;
     }
 
 block content
@@ -19,11 +13,22 @@ block content
     a.btn.btn-primary(href="/add_prize")
       i.icon-plus.icon-white
       | Add Prize
-    div
-      div.prize-thumb
-        img(src="/img/iphone-5.png")
-      div.prize-info
-        label Item: iPhone 5
-        label Sponsor: JLN Corporation
-        label Date Posted: 06/16/1991
-        label Description: Black 32GB WiFi only
+    table.table.table-striped
+      thead
+        tr
+          th Item
+          th Name
+          th Sponsor
+          th Description
+          th Date Posted
+      tbody
+        - each prize in prizes
+          tr
+            td
+              img.prize-img(src="/img/iphone-5.png") 
+            td= prize.name
+            td= prize.sponsor
+            td= prize.desc
+            td= moment().format("YYYY-MM-DD hh:mm", prize.date_posted)
+
+    div.timestamp= "as of " + ts

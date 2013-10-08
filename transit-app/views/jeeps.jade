@@ -1,17 +1,13 @@
 extends layout
 
-block page_style
-  style(type="text/css").
-    div.timestamp {
-      text-align: right;
-    }
-
 block content
   div.container
     h1= title
     a.btn.btn-primary(href="/add_jeep")
       i.icon-plus.icon-white
       | Add Jeep
+    &nbsp;
+    a.btn.btn-primary(href="/lines") View Lines
     table.table.table-striped
       thead
         tr
@@ -24,9 +20,9 @@ block content
         - each jeep in jeeps
           tr
             td= jeep.plate_num
-            td= jeep.first_name
-            td= jeep.line
+            td= jeep.first_name + " " + jeep.last_name
+            td= lineLookup[jeep.line]
             td= jeep.total_votes
             td= jeep.amount_raised
 
-    div.timestamp as of 8/19/2013 13:01:02
+    div.timestamp= "as of " + ts

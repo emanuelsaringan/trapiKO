@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  div.container
+    h1= title
+    div
+      a.nav-back(onclick="window.history.back()") < Go back to Jeep Overview
+    a.btn.btn-primary(href="/add_line")
+      i.icon-plus.icon-white
+      | Add Line
+    table.table.table-striped
+      thead
+        tr
+          th Route
+      tbody
+        - each line in lines
+          tr
+            td= line.name
+
+    div.timestamp= "as of " + ts

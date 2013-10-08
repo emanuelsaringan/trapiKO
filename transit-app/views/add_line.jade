@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  div.container
+    h1= title
+    div
+      a.nav-back(onclick="window.history.back()") < Go back to Line Overview
+    div.span6
+      form.form-horizontal(action="/add_line",method="POST")
+        div.control-group
+          label.control-label Line Name:
+          div.controls
+            input(type="text",name="name",placeholder="From - To")
+
+        div.form-actions
+          input.btn(type="reset",value="Reset")
+          | 
+          a.btn.btn-primary#BTN_ADD
+            i.icon-plus.icon-white
+            |  Add
+
+block page_scripts
+  script(type="text/javascript").
+    $(document).ready(
+      function() {
+        $("#BTN_ADD").click(
+          function() {
+            document.forms[1].submit();
+          }
+        );
+      }
+    );

@@ -24,3 +24,7 @@ form.form-search input {
 a.nav-back {
   cursor: pointer;
 }
+
+div.timestamp {
+  text-align: right;
+}

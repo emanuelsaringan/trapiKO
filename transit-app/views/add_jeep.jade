@@ -32,10 +32,8 @@ block content
           label.control-label Line:
           div.controls
             select(name="line")
-              option(value="0") Katipunan-Balara
-              option(value="1") Tungko-MRT
-              option(value="2") UP-Philcoa
-              option(value="3") Ayala-Buendia
+              - each line in lines
+                option(value=line._id)= line.name
 
         div.form-actions
           input.btn(type="reset",value="Reset")

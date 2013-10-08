@@ -7,31 +7,31 @@ var Connection = mongodb.Connection;
 var BSON = mongodb.BSON;
 var ObjectID = mongodb.ObjectID;
 
-PrizeProvider = function(host, port) {
+VoterProvider = function(host, port) {
   var server = new Server(host, port, {safe:false}, {auto_reconnect:true}, {});
   this.db = new Db(DB_NAME, server);
   this.db.open(function(){});
 }
 
-PrizeProvider.prototype.getCollection = function(callback) {
-  this.db.collection('prize',
-    function(error, prize_collection) {
+VoterProvider.prototype.getCollection = function(callback) {
+  this.db.collection('voter',
+    function(error, voter_collection) {
       if (error) {
         callback(error);
       } else {
-        callback(null, prize_collection);
+        callback(null, voter_collection);
       }
     }
   );
 }
 
-PrizeProvider.prototype.findAll = function(callback) {
+VoterProvider.prototype.findAll = function(callback) {
   this.getCollection(
-    function(error, prize_collection) {
+    function(error, voter_collection) {
       if (error) {
         callback(error);
       } else {
-        prize_collection.find({},
+        voter_collection.find({},
           function(error, result) {
             if (error) {
               callback(error);
@@ -45,15 +45,18 @@ PrizeProvider.prototype.findAll = function(callback) {
   );
 };
 
-PrizeProvider.prototype.add = function(prize, callback) {
+VoterProvider.prototype.add = function(voter, callback) {
   this.getCollection(
-    function(error, prize_collection) {
+    function(error, voter_collection) {
       if (error) {
         callback(error);
       } else {
-        prize.date_posted = new Date();
+        voter.total_votes = 0;
+        voter.total_amount = 0;
+        voter.jeepneys_voted = 0;
+        voter.last_vote_dt = 0;
         
-        prize_collection.insert(prize,
+        voter_collection.insert(voter,
           function(error, result) {
             if (error) {
               callback(error);
@@ -67,4 +70,4 @@ PrizeProvider.prototype.add = function(prize, callback) {
   );
 };
 
-exports.PrizeProvider = PrizeProvider;
+exports.VoterProvider = VoterProvider;

@@ -11,15 +11,23 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
+  , moment = require('moment')
   , passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy
   , NodeUtils = require('./node-utils').NodeUtils
   , UserProvider = require('./user_provider').UserProvider
-  , JeepProvider = require('./jeep_provider').JeepProvider;
+  , JeepProvider = require('./jeep_provider').JeepProvider
+  , VoterProvider = require('./voter_provider').VoterProvider
+  , LineProvider = require('./line_provider').LineProvider
+  , PrizeProvider = require('./prize_provider').PrizeProvider;
 
 var app = express();
 var UserProvider = new UserProvider(HOST_NAME, DB_PORT);
 var JeepProvider = new JeepProvider(HOST_NAME, DB_PORT);
+var VoterProvider = new VoterProvider(HOST_NAME, DB_PORT);
+var LineProvider = new LineProvider(HOST_NAME, DB_PORT);
+var PrizeProvider = new PrizeProvider(HOST_NAME, DB_PORT);
+var timestamp = moment().format('YYYY-MM-DD hh:mm a');
 
 // Order is important! 
 app.configure(function() {
@@ -123,15 +131,33 @@ app.get('/contact',
 
 app.get('/jeeps',
   function(req, res) {
-    JeepProvider.findAll(
-      function(error, results) {
+    LineProvider.findAll(
+      function(error, line_results) {
         if (error) {
           res.render('/fail');
-        } else { 
-          res.render('jeeps', {
-            title: 'Jeepney Overview',
-            jeeps: results
-          });
+        } else {
+          // Generate line lineLookup
+          var lineLookup = {};
+          var lineResultsLen = line_results.length;
+          for (var i = 0; i < lineResultsLen; i++) {
+            var line = line_results[i];
+            lineLookup[line._id] = line.name;
+          }
+
+          JeepProvider.findAll(
+            function(error, jeep_results) {
+              if (error) {
+                res.render('/fail');
+              } else {
+                res.render('jeeps', {
+                  title: 'Jeepney Overview',
+                  jeeps: jeep_results,
+                  ts: timestamp,
+                  lineLookup: lineLookup
+                });
+              }
+            }
+          );
         }
       }
     );
@@ -140,17 +166,80 @@ app.get('/jeeps',
 
 app.get('/voters',
   function(req, res) {
-    res.render('voters', {
-      title: 'Voter Overview'
+    VoterProvider.findAll(
+      function(error, results) {
+        if (error) {
+          res.render('/fail');
+        } else {
+          res.render('voters', {
+            title: 'Voter Overview',
+            voters: results,
+            ts: timestamp
+          });
+        }
+      }
+    );
+  }
+);
+
+app.get('/lines',
+  function(req, res) {
+    LineProvider.findAll(
+      function(error, results) {
+        if (error) {
+          res.render('/fail');
+        } else {
+          res.render('lines', {
+            title: 'Line Overview',
+            lines: results,
+            ts: timestamp
+          });
+        }
+      }
+    );
+  }
+);
+
+app.get('/add_line',
+  function(req, res) {
+    res.render('add_line', {
+      title: 'Add A Line'
     });
+  }
+);
+
+app.post('/add_line',
+  function(req, res) {
+    var line = {
+      name : req.param('name')
+    };
+
+    LineProvider.add(line, 
+      function(error, result) {
+        if (error) {
+          res.redirect('/fail');
+        } else {
+          res.redirect('/lines');
+        }
+      }
+    );
   }
 );
 
 app.get('/add_jeep',
   function(req, res) {
-    res.render('add_jeep', {
-      title: 'Add A Jeep'
-    });
+    LineProvider.findAll(
+      function(error, results) {
+        if (error) {
+          res.render('/fail');
+        } else {
+          res.render('add_jeep', {
+            title: 'Add A Jeep',
+            lines: results
+          });
+        }
+      }
+    );
   }
 );
 
@@ -159,6 +248,7 @@ app.post('/add_jeep',
     var jeep = {
       plate_num : req.param('plate_num'),
       first_name : req.param('first_name'),
+      last_name: req.param('last_name'),
       line : req.param('line')
     };
 
@@ -176,9 +266,20 @@ app.post('/add_jeep',
 
 app.get('/prizes',
   function(req, res) {
-    res.render('prizes', {
-      title: 'Prize Overview'
-    });
+    PrizeProvider.findAll(
+      function(error, results) {
+        if (error) {
+          res.render('/fail');
+        } else {
+          res.render('prizes', {
+            title: 'Prize Overview',
+            prizes: results,
+            ts: timestamp,
+            moment: moment
+          });
+        }
+      }
+    );
   }
 );
 
@@ -192,7 +293,23 @@ app.get('/add_prize',
 
 app.post('/add_prize',
   function(req, res) {
-    res.redirect('/prizes');
+    var prize = {
+      name: req.param('name'),
+      sponsor: req.param('sponsor'),
+      price: req.param('price'),
+      desc: req.param('desc'),
+      img: req.param('img')
+    };
+
+    PrizeProvider.add(prize,
+      function(error) {
+        if (error) {
+          res.redirect('/fail');
+        } else {
+          res.redirect('/prizes');
+        }
+      }
+    );
   }
 );
 
@@ -212,10 +329,6 @@ app.post('/logout',
   }
 );
 
-// http.createServer(app).listen(app.get('port'), function(){
-//   console.log('Express server listening on port ' + app.get('port'));
-// });
-
 //Socket.IO
 var io = require('socket.io').listen(app.listen(WEB_APP_PORT));
 console.log("Listening on port " + WEB_APP_PORT);
@@ -234,11 +347,11 @@ app.use(
     }
 
     if (req.accepts('json')) {
-      res.send({error : 'Not founds'});
+      res.send({error : 'Not found'});
       return;
     }
 
-    res.type('txt').send('Not foundz');
+    res.type('txt').send('Not found');
   }
 );
 
