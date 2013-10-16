@@ -3,7 +3,6 @@ div.main-area {
   padding-left: 50px;
   padding-right: 50px;
   height: 500px;
-  background:rgba(255,255,255,0.5);
 }
 
 div.phone-image-area {
@@ -20,7 +19,6 @@ div.numbers-area {
 
 .number {
   font-weight: bold;
-  color: orange;
   font-size: 72pt;
 }
 
@@ -42,7 +40,7 @@ div.sub-summary-area {
   margin-right: auto;
 }
 
-div.sub-image-area {
+div.sub-image-area img {
   float: left;
   width: 60px;
   height: 60px;

@@ -8,7 +8,7 @@ block page_style
 block content
   div.main-area
     div.phone-image-area
-      img(src="img/iphone-5.png", width="400", height="450")
+      img(id="phone_img",src="img/iphone-5.png", width="400", height="450")
     div.numbers-area
       div.main-summary-area
         span.number 14,895
@@ -17,19 +17,59 @@ block content
         div.span3#JEEP_AREA
           div.subnumber 789
           div.sub-image-area
-            img(src="/img/jeep-icon.jpg")
+            img(src="/img/jeep-icon.png")
           div.sub-message-area Unique Jeepneys
         div.span3#LINE_AREA
           div.subnumber 542
           div.sub-image-area
-            img(src="/img/person-icon.jpg")
+            img(src="/img/person-icon.png")
           div.sub-message-area Unique Commuters
         div.span3#VOTER_AREA
           div.subnumber 9,589
           div.sub-image-area
-            img(src="/img/coin-icon.jpg")
+            img(src="/img/coin-icon.png")
           div.sub-message-area Pesos Worth of Prizes
 
 block page_scripts
   if (user)
     script(type="text/javascript", src="/javascripts/index_login.js")
+    script(type="text/javascript").
+      function formatMoney(amt) {
+        if (amt && amt.length > 3) {
+          var str = "";
+          var lastIndex = 0;
+          for (var i = amt.length - 3; i > 0; i -= 3) {
+            str = "," + amt.substring(i, i + 3) + str;
+            lastIndex = i;
+          }
+
+          str = amt.substring(0, lastIndex) + str;;
+          return str;
+        }
+
+        return amt;
+      }
+
+      setInterval(function() {
+        var number = null;
+        if (Math.floor(Math.random() * 100) % 2 == 0) {
+          var numbers = $("div.subnumber");
+          var index = Math.floor(Math.random() * 100) % numbers.length;
+          number = numbers.eq(index);
+          var val = parseInt(number.text().replace(/\,/g, ""), 10) + 1;
+          number.text(formatMoney(val + ""));
+
+          if (1 == index) {
+            number = $("span.number:first");
+            val = parseInt(number.text().replace(/\,/g, ""), 10) + 1;
+            number.text(formatMoney(val + ""));
+          } else if (2 == index) {
+            val = parseInt(number.text().replace(/\,/g, ""), 10) + 1000;
+            number.text(formatMoney(val + ""));
+          }
+        } else {
+          number = $("span.number:first");
+          var val = parseInt(number.text().replace(/\,/g, ""), 10) + 1;
+          number.text(formatMoney(val + ""));
+        }
+      }, 1000);

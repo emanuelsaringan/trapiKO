@@ -2,8 +2,8 @@ extends layout
 
 block content
   div.container
-    h1= title
-    div The trapiKO web app was built using the following technologies: 
+    h1= title + ' Development Blog'
+    div= 'The ' + title + ' web app was built using the following technologies: '
     ul
       li
         b Node JS
@@ -36,14 +36,11 @@ block content
         b HTML, CSS
         |  and 
         b Javascript
-    div On the other hand, the trapiKO mobile app was built using: 
+    div= 'On the other hand, the ' + title + ' mobile app was built using:'
     ul
       li
         b Android
-      li
-        b Mono
-      li
-        b Xamarin
+        div The most widely used Mobile Operating System
     div
       span You may also browse our repo at 
       a(href="https://github.com/emanuelsaringan/trapiKO") Github

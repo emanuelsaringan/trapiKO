@@ -11,6 +11,7 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
+  , fs = require('fs')
   , moment = require('moment')
   , passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy
@@ -27,7 +28,10 @@ var JeepProvider = new JeepProvider(HOST_NAME, DB_PORT);
 var VoterProvider = new VoterProvider(HOST_NAME, DB_PORT);
 var LineProvider = new LineProvider(HOST_NAME, DB_PORT);
 var PrizeProvider = new PrizeProvider(HOST_NAME, DB_PORT);
-var timestamp = moment().format('YYYY-MM-DD hh:mm a');
+
+// Constants
+var APP_NAME = 'Rklamo';
+var TIMESTAMP = moment().format('YYYY-MM-DD hh:mm a');
 
 // Order is important! 
 app.configure(function() {
@@ -99,7 +103,7 @@ if ('development' == app.get('env')) {
 app.get('/', 
   function(req, res) {
     res.render('index',{
-      title: 'trapiKO'
+      title: APP_NAME
     });
   }
 );
@@ -107,7 +111,7 @@ app.get('/',
 app.get('/about', 
   function(req, res) {
     res.render('about',{
-      title: 'About trapiKO'
+      title: 'About ' + APP_NAME
     });
   }
 );
@@ -115,7 +119,7 @@ app.get('/about',
 app.get('/blog', 
   function(req, res) {
     res.render('blog', {
-      title: 'trapiKO Development Blog'
+      title: APP_NAME
     });
   }
 );
@@ -152,7 +156,7 @@ app.get('/jeeps',
                 res.render('jeeps', {
                   title: 'Jeepney Overview',
                   jeeps: jeep_results,
-                  ts: timestamp,
+                  ts: TIMESTAMP,
                   lineLookup: lineLookup
                 });
               }
@@ -174,7 +178,8 @@ app.get('/voters',
           res.render('voters', {
             title: 'Voter Overview',
             voters: results,
-            ts: timestamp
+            moment: moment,
+            ts: TIMESTAMP
           });
         }
       }
@@ -192,7 +197,7 @@ app.get('/lines',
           res.render('lines', {
             title: 'Line Overview',
             lines: results,
-            ts: timestamp
+            ts: TIMESTAMP
           });
         }
       }
@@ -274,7 +279,7 @@ app.get('/prizes',
           res.render('prizes', {
             title: 'Prize Overview',
             prizes: results,
-            ts: timestamp,
+            ts: TIMESTAMP,
             moment: moment
           });
         }
@@ -307,6 +312,23 @@ app.post('/add_prize',
           res.redirect('/fail');
         } else {
           res.redirect('/prizes');
+        }
+      }
+    );
+  }
+);
+
+app.get('/analytics',
+  function(req, res) {
+    LineProvider.findAll(
+      function(error, results) {
+        if (error) {
+          res.render('/fail');
+        } else {
+          res.render('analytics', {
+            title: 'Analytics',
+            lines: results
+          });
         }
       }
     );

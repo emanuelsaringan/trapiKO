@@ -5,7 +5,7 @@ div.navbar.navbar-fixed-top
         div.nav-collapse
           a.brand(href="/")
             span
-              em trapiKO
+              em Rklamo
           ul.nav
             li#home_navlink
               a(id="home_navlink",href="/") Home
@@ -15,6 +15,15 @@ div.navbar.navbar-fixed-top
               a(href="/blog") Blog
             li#contact_navlink
               a(href="/contact") Contact Us
+            if (user)
+              li#jeeps_navlink
+                a(href="/jeeps") Jeeps
+              li#voters_navlink
+                a(href="/voters") Voters
+              li#prizes_navlink
+                a(href="/prizes") Prizes
+              li#analytics_navlink
+                a(href="/analytics") Analytics
           div.login-logout-area
             if (!user)
               form.form-search(method="POST", action="/login")

@@ -1,10 +1,39 @@
+@font-face {
+    font-family: 'Exo';
+    src: url('../font/Exo-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body{
+  font-family: 'Exo';
+  background-color: #97D3D4;
+}
+
 div.viewport {
   margin-top: 40px;
+}
+
+div.footer {
+  background: url('../img/footer.tiff');
+  height: 75px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 
 /*
  * Nav
  */
+
+div.navbar {
+  background-image: none;
+  background-color: #EEB500;
+}
+
+.navbar li {
+  font-weight: bold;
+}
 
 .brand span {
   font-weight: bold;

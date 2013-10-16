@@ -1,0 +1,71 @@
+extends layout
+
+block page_style
+  style(type="text/css").
+    html {
+      height: 100%;
+    }
+
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #map-canvas {
+      height: 500px;
+      margin-bottom: 10px;
+    }
+
+    #spectrum {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+
+    div.log-area {
+      display: inline-block;
+      width: 10%;
+      padding-right: 5px;
+      vertical-align: top;
+      overflow: auto;
+      height: 500px;
+    }
+
+    div.map-area {
+      display: inline-block;
+      width: 85%;
+    }
+
+    div.log {
+      cursor: pointer;
+      margin-bottom: 5px;
+    }
+
+    .hovered {
+      background-color: #777;
+    }
+
+block content
+  div.container
+    h1= title
+    div.log-area
+    div.map-area
+      div#map-canvas
+      div(class="span3")
+        span Good
+        img(id="spectrum",src="img/spectrum.jpg")
+        span Bad
+      div(class="span4")
+        span September 
+        input(id="scrub",id="scrub",type="range",min="1",max="30",value="1",step="1")
+        span  October
+      div(class="span2")
+        select(id="lines",name="lines")
+          option
+          - each line in lines
+            option(value="line._id")= line.name
+
+block page_scripts
+  //- API Key: AIzaSyARQyHpN2E6l2ZX8ITOKXlOF0qpZJ-fhg8
+  script(type="text/javascript", src="http://maps.googleapis.com/maps/api/js?key=AIzaSyARQyHpN2E6l2ZX8ITOKXlOF0qpZJ-fhg8&sensor=false")
+  script(type="text/javascript", src="/javascripts/analytics.js")

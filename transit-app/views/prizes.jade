@@ -25,7 +25,7 @@ block content
         - each prize in prizes
           tr
             td
-              img.prize-img(src="/img/iphone-5.png") 
+              img.prize-img(src="/uploads/" + prize._id + ".png") 
             td= prize.name
             td= prize.sponsor
             td= prize.desc
