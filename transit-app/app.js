@@ -1,6 +1,7 @@
 
 /**
  * Module dependencies.
+ * @author emanuel saringan
  */
 var HOST_NAME = 'localhost';
 var WEB_APP_PORT = 3000;
