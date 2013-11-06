@@ -5,18 +5,11 @@ var map = null;
 function initialize() {
   ADMU = new google.maps.LatLng(15.6397, 121.0780);
 
-  map = new google.maps.Map(document.getElementById("map-canvas"), {
+  map = new google.maps.Map(document.getElementById('map-canvas'), {
     center: ADMU,
     zoom: ZOOM_LEVEL,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
-
-  // DEBUG Mode: Display coordinates on right click
-  // google.maps.event.addListener(map, "rightclick", function(event) {
-  //   var lat = event.latLng.lat();
-  //   var lng = event.latLng.lng();
-  //   console.log("Lat=" + lat + "; Lng=" + lng);
-  // });
 }
 
 var directionsDisplay = null;
@@ -69,36 +62,42 @@ function calcRoute(color) {
 google.maps.event.addDomListener(window, 'load', initialize);
 var COLOR_ARR = ['red', 'orange', 'yellow', 'green'];
 
-$("#scrub").change(
+$('#scrub').change(
   function() {
     var val = $(this).val();
     calcRoute(COLOR_ARR[val % COLOR_ARR.length]);
   }
 );
 
-$("#lines").change(
+$('#lines').change(
   function() {
-    $("#scrub").change();
+    $('#scrub').change();
   }
 );
 
 // Logs
-var LINE_ARR = ['Shaw Blvd. - Quiapo', 'UP - Philcoa', 'Katipunan - Balara', 'Santolan - Cubao', 'Divisoria - Lawton', 'PRC Guadalupe'];
+var LINE_ARR = ['Shaw Blvd. - Quiapo',
+  'UP - Philcoa',
+  'Katipunan - Balara',
+  'Santolan - Cubao',
+  'Divisoria - Lawton',
+  'PRC Guadalupe'];
+
 function addLog(rating, route) {
-  var div = $("<div class='log well'>");
-  div.text(rating + " for " + route);
+  var div = $('<div class="log well">');
+  div.text(rating + ' for ' + route);
   div.hide();
-  $("div.log-area").prepend(div);
+  $('div.log-area').prepend(div);
 
   div.mouseover(
     function() {
-      div.addClass("hovered");
+      div.addClass('hovered');
     }
   );
 
   div.mouseout(
     function() {
-      div.removeClass("hovered");
+      div.removeClass('hovered');
     }
   );
 
@@ -115,6 +114,5 @@ function addLog(rating, route) {
 setInterval(
   function() {
     var num = Math.random() * 10;
-    addLog(Math.floor(num) + ".0", LINE_ARR[Math.floor(Math.random() * 100) % LINE_ARR.length]);
+    addLog(Math.floor(num) + '.0', LINE_ARR[Math.floor(Math.random() * 100) % LINE_ARR.length]);
   }, 2000);
-
